@@ -1,0 +1,15 @@
+services:
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+
+    container_name: vai-backend
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./apps/backend:/app
+
+    restart: unless-stopped

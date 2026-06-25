@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual Environment
+.venv/
+**/.venv/
+
+# Environment
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# Python Cache
+.pytest_cache/
+.mypy_cache/
+
+# Alembic
+alembic.ini
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
