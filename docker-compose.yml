@@ -1,4 +1,22 @@
 services:
+  postgres:
+    image: postgres:16
+
+    container_name: vai-postgres
+
+    environment:
+      POSTGRES_DB: vai_db
+      POSTGRES_USER: vai_user
+      POSTGRES_PASSWORD: vai_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
   backend:
     build:
       context: ./apps/backend
@@ -12,4 +30,10 @@ services:
     volumes:
       - ./apps/backend:/app
 
+    depends_on:
+      - postgres
+
     restart: unless-stopped
+
+volumes:
+  postgres_data:
