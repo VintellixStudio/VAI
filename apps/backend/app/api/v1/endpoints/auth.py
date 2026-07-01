@@ -2,9 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.dependencies.database import get_db
-from app.models.user import User
 from app.repositories.user_repository import UserRepository
+from app.schemas.auth import LoginRequest, TokenResponse
 from app.schemas.user import UserCreate, UserResponse
+from app.services.auth_service import AuthService
 from app.services.user_service import UserService
 
 router = APIRouter()
@@ -34,6 +35,27 @@ def register(
             detail="Username already exists",
         )
 
-    user = service.create_user(payload)
+    return service.create_user(payload)
 
-    return user
+
+@router.post(
+    "/login",
+    response_model=TokenResponse,
+)
+def login(
+    payload: LoginRequest,
+    db: Session = Depends(get_db),
+):
+    repository = UserRepository(db)
+    service = AuthService(repository)
+
+    try:
+        return service.login(
+            payload.email,
+            payload.password,
+        )
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password",
+        )
