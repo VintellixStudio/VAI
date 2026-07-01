@@ -1,9 +1,14 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
 
-from app.schemas.user import UserRead
+from app.schemas.user import UserResponse
 
 
-class Token(BaseModel):
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class TokenResponse(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
@@ -15,5 +20,5 @@ class TokenPayload(BaseModel):
     type: str | None = None
 
 
-class CurrentUserResponse(UserRead):
+class CurrentUserResponse(UserResponse):
     model_config = ConfigDict(from_attributes=True)
