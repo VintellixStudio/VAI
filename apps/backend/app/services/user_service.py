@@ -1,3 +1,4 @@
+from app.core.security import get_password_hash
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import UserCreate, UserUpdate
@@ -13,6 +14,9 @@ class UserService:
             username=data.username,
             email=data.email,
             full_name=data.full_name,
+            hashed_password=get_password_hash(data.password),
+            is_active=True,
+            is_superuser=False,
         )
         return self.repository.create(user)
 
