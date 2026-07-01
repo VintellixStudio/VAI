@@ -13,6 +13,9 @@ app.include_router(
     prefix=settings.API_V1_STR
 )
 
+swagger_ui_init_oauth={
+    "usePkceWithAuthorizationCodeGrant": False,
+}
 
 @app.get("/")
 def root():
