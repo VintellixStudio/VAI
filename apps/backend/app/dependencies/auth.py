@@ -1,13 +1,14 @@
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
-from jose import JWTError, jwt
+from app.core.security import decode_token, oauth2_scheme
 
 from app.core.security import oauth2_scheme
 from app.core.settings import settings
 from app.dependencies.database import DBSession
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
+from jose import JWTError
 
 
 def get_current_user(
@@ -20,12 +21,9 @@ def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    try:
-        payload = jwt.decode(
-            token,
-            settings.SECRET_KEY,
-            algorithms=[settings.ALGORITHM],
-        )
+payload = decode_token(token)
+ 
+
 
         subject: str | None = payload.get("sub")
 
@@ -41,3 +39,5 @@ def get_current_user(
         raise credentials_exception
 
     return user
+
+payload = decode_token(token)
